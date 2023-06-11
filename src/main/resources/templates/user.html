@@ -5,7 +5,31 @@
 </head>
 <body>
 <h1>User, welcome spring boot security page!</h1>
+<table>
+    <tr>
+        <th>Имя</th>
+        <th>Фамилия</th>
+        <th>Username</th>
+        <th>email</th>
+    </tr>
 
+    <div th:each="userInfo : ${user}">
+        <tr>
+            <td th:text="${user.getName()}"></td>
+            <td th:text="${user.getSurname()}"></td>
+            <td th:text="${user.getUsername()}"></td>
+            <td th:text="${user.getEmail()}"></td>
+        </tr>
 
+    </div>
+</table>
+
+<br/>
+<br/>
+<br/>
+<br/>
+<form th:method="POST" th:action="@{/logout}">
+    <input type="submit" value="Logout"/>
+</form>
 </body>
 </html>
