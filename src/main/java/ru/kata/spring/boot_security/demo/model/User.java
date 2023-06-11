@@ -1,5 +1,6 @@
 package ru.kata.spring.boot_security.demo.model;
 
+import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -12,9 +13,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.Set;
-
 
 @Entity(name = "user")
 @Table(name = "users")
@@ -25,24 +28,34 @@ public class User implements UserDetails {
     @Column(name = "id")
     private Long id;
 
+    @NotBlank(message = "Имя обязательно")
     @Column(name = "name")
     private String name;
 
+    @NotBlank(message = "Фамилия обязательна")
     @Column(name = "surname")
     private String surname;
 
+    @NotBlank(message = "Ник обязателен")
+    @Length(min = 3, max = 20, message = "Username must be between 3 and 20 characters")
     @Column(name = "username", unique = true)
     private String username;
 
+    @NotBlank(message = "Пароль является обязательным")
+    @Length(min = 6, message = "Пароль должен содержать не менее 6 символов")
     @Column(name = "password")
     private String password;
 
+    @NotBlank(message = "Email обязателен")
+    @Email(message = "Email должен быть действительным")
     @Column(name = "email")
     private String email;
 
+    @NotNull(message = "Роль пользователя обязательна")
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "user")
     private Set<Role> roles;
+
 
     public User() {
     }
@@ -55,7 +68,6 @@ public class User implements UserDetails {
         this.email = email;
         this.roles = roles;
     }
-
 
 
     public Long getId() {

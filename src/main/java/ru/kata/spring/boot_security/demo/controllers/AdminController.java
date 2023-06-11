@@ -14,6 +14,7 @@ import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.RoleServiceImpl;
 import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
 
+
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
@@ -27,6 +28,7 @@ public class AdminController {
         this.userService = userService;
         this.roleService = roleService;
     }
+
     @GetMapping()
     public String adminPage(Model model) {
         model.addAttribute("users", userService.getAllUsers());
@@ -34,7 +36,7 @@ public class AdminController {
     }
 
     @GetMapping("/new")
-    public String getUserCreateForm(@ModelAttribute("user") User user,Model model) {
+    public String getUserCreateForm(@ModelAttribute("user") User user, Model model) {
 
         model.addAttribute("roles", roleService.getRoles());
         userService.getAllUsers();
