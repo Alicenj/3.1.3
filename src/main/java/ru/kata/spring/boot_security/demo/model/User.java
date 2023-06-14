@@ -1,6 +1,5 @@
 package ru.kata.spring.boot_security.demo.model;
 
-import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -14,10 +13,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.Set;
+
 
 @Entity(name = "user")
 @Table(name = "users")
@@ -28,34 +28,33 @@ public class User implements UserDetails {
     @Column(name = "id")
     private Long id;
 
-    @NotBlank(message = "Имя обязательно")
     @Column(name = "name")
+    @NotEmpty(message = "Имя не может быть пустым")
+    @Size(min = 2, max = 20, message = "Имя от 2 до 10 символов")
     private String name;
 
-    @NotBlank(message = "Фамилия обязательна")
     @Column(name = "surname")
+    @NotEmpty(message = "Фамилия не может быть пустой")
+    @Size(min = 2, max = 20, message = "Фамилия от 2 до 10 символов")
     private String surname;
 
-    @NotBlank(message = "Ник обязателен")
-    @Length(min = 3, max = 20, message = "Username must be between 3 and 20 characters")
     @Column(name = "username", unique = true)
+    @NotEmpty(message = "Ник не может быть пустой")
+    @Size(min = 2, max = 10, message = "Ник от 2 до 10 символов")
     private String username;
 
-    @NotBlank(message = "Пароль является обязательным")
-    @Length(min = 6, message = "Пароль должен содержать не менее 6 символов")
     @Column(name = "password")
+    @NotEmpty(message = "Пароль не может быть пустой")
     private String password;
 
-    @NotBlank(message = "Email обязателен")
-    @Email(message = "Email должен быть действительным")
     @Column(name = "email")
+    @NotEmpty(message = "Email не может быть пустой")
+    @Email(message = "Email должен быть валидным")
     private String email;
 
-    @NotNull(message = "Роль пользователя обязательна")
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "user")
     private Set<Role> roles;
-
 
     public User() {
     }
@@ -68,6 +67,7 @@ public class User implements UserDetails {
         this.email = email;
         this.roles = roles;
     }
+
 
 
     public Long getId() {
